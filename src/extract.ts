@@ -1,26 +1,56 @@
 import { Recipe as SchemaRecipe } from 'schema-dts';
 import { Recipe } from './types/Recipe';
-import { fetchSchemas } from './requests/fetch';
+import { fetchHTML } from './requests/fetch';
 
 
-export async function getSchemaRecipe(url: string): Promise<SchemaRecipe> {
-  const definitions = await fetchSchemas(url);
+export async function getSchemaRecipe(url: string): Promise<SchemaRecipe | null> {
+  const html = await fetchHTML(url);
+  const definitions = extractDefinitions(html);
   return extractSchemaRecipe(definitions);
 }
 
-export async function getRecipe(url: string): Promise<Recipe> {
+export async function getRecipe(url: string): Promise<Recipe | null> {
   const schemaRecipe = await getSchemaRecipe(url);
-  return convertRecipe(schemaRecipe);
+  return schemaRecipe ? convertRecipe(schemaRecipe) : null;
 }
 
-function extractSchemaRecipe(definitions: any[]): SchemaRecipe {
-  let schemaRecipe: SchemaRecipe = { "@type": 'Recipe' };
-  for (const definition of definitions) {
-    if(definition['@type']?.toLowerCase() === 'recipe') {
-      schemaRecipe = definition;
+function extractDefinitions(html: string) : any[] {
+
+  let definitions: any[] = [];
+  const regex = /(?<=(<script type="application\/ld\+json">))([\s\S]*?)(?=(<\/script>))/g
+  const regExpMatchArray = html.match(regex);
+  try {
+    if (regExpMatchArray) {
+      regExpMatchArray.forEach((content) => {
+        const definition = JSON.parse(content);
+        definitions.push(definition);
+      })
+    }
+  }catch (e){
+    console.log("Failed to parse!")
+  }
+  return definitions;
+}
+
+function extractSchemaRecipe(definitions: any[]): SchemaRecipe | null {
+  let schemaRecipe: SchemaRecipe = recursiveTypeSearch(definitions, 'recipe') as unknown as SchemaRecipe;
+  return schemaRecipe ?? null;
+}
+
+function recursiveTypeSearch(definitions: any[], type: string) : any[] | null {
+  for (const k in definitions) {
+    if(k === '@type'){
+      if (definitions[k].toLowerCase() === type) {
+        return definitions;
+      }
+    }
+
+    if (typeof definitions[k] == "object" && definitions[k] !== null){
+      let definition = recursiveTypeSearch(definitions[k], type);
+      if(definition) return definition;
     }
   }
-  return schemaRecipe;
+  return null;
 }
 
 function convertRecipe(schemaRecipe: SchemaRecipe): Recipe {
