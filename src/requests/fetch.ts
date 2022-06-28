@@ -1,6 +1,6 @@
 import { axios } from './axiosInit';
 
-export async function fetchImage(url: string) {
+export async function fetchImageBase64(url: string) {
   return axios
     .get(url, {
       responseType: 'arraybuffer'
