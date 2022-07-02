@@ -36,13 +36,9 @@ export async function extractRecipe(schemaRecipe: SchemaRecipe, schemaWebSite: S
 
 
 function extractSource(schemaWebSite: SchemaWebSite | null, url: string, author: any, publisher: any): RecipeSource {
-  const authorName = typeof author?.name === 'string' ? author?.name : '';
-  const publisherName = typeof publisher?.name === 'string' ? publisher?.name : '';
-  let publisherUrl = '';
-
-  if (schemaWebSite) {
-    publisherUrl = typeof schemaWebSite?.url === 'string' ? schemaWebSite?.url : '';
-  }
+  const authorName = typeof author?.name === 'string' ? author?.name : null;
+  const publisherName = typeof publisher?.name === 'string' ? publisher?.name : null;
+  let publisherUrl = typeof schemaWebSite?.url === 'string' ? schemaWebSite?.url : null;
 
   return <RecipeSource>{
     author: authorName,
@@ -69,9 +65,9 @@ function extractNutrition(value: any): RecipeNutrition {
   };
 }
 
-function extractMinutes(duration: any): number {
-  let minutes = 0;
+function extractMinutes(duration: any): number | null {
   if (typeof duration === 'string') {
+    let minutes = 0;
     const cookTimeObject = td.parse(duration);
     if (cookTimeObject.minutes) {
       minutes += cookTimeObject.minutes;
@@ -79,8 +75,9 @@ function extractMinutes(duration: any): number {
     if (cookTimeObject.hours) {
       minutes += cookTimeObject.hours * 60;
     }
+    return minutes;
   }
-  return minutes;
+  return null;
 }
 
 function extractInstruction(value: any): RecipeInstructionStep[] {
@@ -92,15 +89,15 @@ function extractInstruction(value: any): RecipeInstructionStep[] {
       switch (step['@type']) {
         case 'HowToStep':
           instructionSteps.push({
-            name: step.name || '',
-            text: step.text || '',
+            name: step.name || null,
+            text: step.text || null,
             steps: null,
           });
           break;
         case 'HowToSection':
           instructionSteps.push({
-            name: step.name || '',
-            text: '',
+            name: step.name || null,
+            text: null,
             steps: extractInstruction(step.itemListElement),
           });
           break;
@@ -110,7 +107,7 @@ function extractInstruction(value: any): RecipeInstructionStep[] {
 
   if (typeof value === 'string') {
     instructionSteps.push({
-      name: '',
+      name: null,
       text: value,
       steps: null,
     });
@@ -131,7 +128,7 @@ function extractIngredients(value: any): RecipeIngredient[] {
 
 export function extractIngredient(ingredientString: string): RecipeIngredient {
   let ingredient = ingredientString;
-  let unit = '';
+  let unit = null;
   for (const measurementUnit of measurementUnits) {
     const regexString = '(\\d|\\s|^)' + measurementUnit + '(\\s|$)';
     const regex = new RegExp(regexString, 'gi');

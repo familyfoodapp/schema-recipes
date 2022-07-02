@@ -1,9 +1,6 @@
-export function extractString(value: any): string {
-  let string: string = '';
-  if (typeof value === 'string') {
-    string = value;
-  }
-  return string;
+export function extractString(value: any): string | null {
+  if (typeof value === 'string') return value;
+  return null;
 }
 
 export function extractStringArray(value: any): string[] {
@@ -19,12 +16,12 @@ export function extractStringArray(value: any): string[] {
   return stringArray;
 }
 
-export function extractNumber(string: any): number {
+export function extractNumber(string: any): number | null {
   if (typeof string === 'string') {
     const regExpMatchArray = string.match(/\d+/);
     if (regExpMatchArray) {
-      return parseInt(regExpMatchArray[0]) ?? 0;
+      return parseInt(regExpMatchArray[0]) ?? null;
     }
   }
-  return 0;
+  return null;
 }

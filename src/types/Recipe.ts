@@ -1,9 +1,9 @@
 export interface Recipe {
-  title: string;
-  description: string;
+  title: string | null;
+  description: string | null;
   category: string[];
   cuisine: string[];
-  yield: number;
+  yield: number | null;
   duration: RecipeDuration,
   ingredients: RecipeIngredient[];
   instruction: RecipeInstructionStep[];
@@ -14,48 +14,48 @@ export interface Recipe {
 }
 
 export interface RecipeDuration {
-  preparationTime: number,
-  cookingTime: number,
-  performTime: number,
-  totalTime: number,
+  preparationTime: number | null,
+  cookingTime: number | null,
+  performTime: number | null,
+  totalTime: number | null,
 }
 
 export interface RecipeIngredient {
-  ingredient: string;
+  ingredient: string | null;
   measure: number | null;
-  unit: string,
+  unit: string | null,
 }
 
 export interface RecipeImage {
   base64: string | null,
-  url: string,
+  url: string | null,
 }
 
 export interface RecipeInstructionStep {
-  name: string,
-  text: string,
+  name: string | null,
+  text: string | null,
   steps: RecipeInstructionStep[] | null,
 }
 
 export interface RecipeNutrition {
-  calories: number,
-  carbohydrateContent: number,
-  cholesterolContent: number,
-  fatContent: number
-  fiberContent: number,
-  proteinContent: number,
-  saturatedFatContent: number,
-  servingSize: number,
-  sodiumContent: number,
-  sugarContent: number,
-  transFatContent: number,
-  unsaturatedFatContent: number,
+  calories: number | null,
+  carbohydrateContent: number | null,
+  cholesterolContent: number | null,
+  fatContent: number | null,
+  fiberContent: number | null,
+  proteinContent: number | null,
+  saturatedFatContent: number | null,
+  servingSize: number | null,
+  sodiumContent: number | null,
+  sugarContent: number | null,
+  transFatContent: number | null,
+  unsaturatedFatContent: number | null,
 }
 
 export interface RecipeSource {
-  author: string,
-  publisher: string,
-  publisherUrl: string,
-  url: string,
-  language: string,
+  author: string | null,
+  publisher: string | null,
+  publisherUrl: string | null,
+  url: string | null,
+  language: string | null,
 }
