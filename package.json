@@ -1,7 +1,7 @@
 {
   "name": "schema-recipes",
   "version": "1.0.0",
-  "description": "",
+  "description": "This library provides functions to retrieve recipe data from any website URL. The website data must be in schema.org format https://schema.org/.",
   "main": "index.js",
   "scripts": {
     "test": "jest --config jestconfig.json",
@@ -35,5 +35,16 @@
     "axios": "^0.27.2",
     "schema-dts": "^1.1.0",
     "tinyduration": "^3.2.2"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [
+    "recipes",
+    "schema",
+    "schema.org",
+    "fetch",
+    "convert",
+    "extract"
+  ]
 }
