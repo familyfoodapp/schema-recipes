@@ -11,6 +11,7 @@ export interface Recipe {
   keywords: string[],
   images: RecipeImage[],
   source: RecipeSource,
+  language: string | null,
 }
 
 export interface RecipeDuration {

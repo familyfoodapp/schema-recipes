@@ -14,13 +14,14 @@ export async function getRecipe(url: string, base64ImageDownload: boolean = fals
   const definitions = extractDefinitions(html);
   const schemaWebSite = extractSchemaWebSite(definitions);
   const schemaRecipe = extractSchemaRecipe(definitions);
-  return  schemaRecipe ? await extractRecipe(schemaRecipe, schemaWebSite, url, base64ImageDownload) : null;
+  const language = extractLanguage(html);
+  return schemaRecipe ? await extractRecipe(schemaRecipe, schemaWebSite, url, language, base64ImageDownload) : null;
 }
 
 function extractDefinitions(html: string): any[] {
 
   let definitions: any[] = [];
-  const regex = /(?<=(<script type( *?)=( *?)["']application\/ld\+json["'][^>]*?>))([\s\S]*?)(?=(<\/script>))/g;
+  const regex = /(?<=(<script[^>]*?type( *?)=( *?)["']application\/ld\+json["'][^>]*?>))([\s\S]*?)(?=(<\/script>))/gi;
   const regExpMatchArray = html.match(regex);
   try {
     if (regExpMatchArray) {
@@ -43,6 +44,16 @@ function extractSchemaRecipe(definitions: any[]): SchemaRecipe | null {
 function extractSchemaWebSite(definitions: any[]): SchemaWebSite | null {
   let schemaWebSite: SchemaWebSite = recursiveTypeSearch(definitions, 'website') as unknown as SchemaWebSite;
   return schemaWebSite ?? null;
+}
+
+function extractLanguage(html: string): string | null {
+  const languageCode = null;
+  const regex = /(?<=(<html[^>]*?lang( *?)=( *?)["']))([A-z|-]*)(?=(["'][^>]*?>))/gi;
+  const regExpMatchArray = html.match(regex);
+  if (regExpMatchArray) {
+    if(regExpMatchArray.length > 0) return regExpMatchArray[0];
+  }
+  return languageCode;
 }
 
 function recursiveTypeSearch(definitions: any[], type: string): any[] | null {

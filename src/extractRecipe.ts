@@ -12,7 +12,7 @@ import * as td from 'tinyduration';
 import { fetchImageBase64 } from './requests/fetch';
 import { extractNumber, extractString, extractStringArray } from './extractTools';
 
-export async function extractRecipe(schemaRecipe: SchemaRecipe, schemaWebSite: SchemaWebSite | null, url: string, base64ImageDownload: boolean): Promise<Recipe> {
+export async function extractRecipe(schemaRecipe: SchemaRecipe, schemaWebSite: SchemaWebSite | null, url: string, language : string | null, base64ImageDownload: boolean): Promise<Recipe> {
   return <Recipe>{
     title: extractString(schemaRecipe.name),
     description: extractString(schemaRecipe.description),
@@ -31,6 +31,7 @@ export async function extractRecipe(schemaRecipe: SchemaRecipe, schemaWebSite: S
     keywords: extractStringArray(schemaRecipe.keywords),
     images: await extractImages(schemaRecipe.image, base64ImageDownload),
     source: extractSource(schemaWebSite, url, schemaRecipe.author, schemaRecipe.publisher),
+    language,
   };
 }
 
@@ -130,7 +131,7 @@ export function extractIngredient(ingredientString: string): RecipeIngredient {
   let ingredient = ingredientString;
   let unit = null;
   for (const measurementUnit of measurementUnits) {
-    const regexString = '(\\d|\\s|^)' + measurementUnit + '(\\s|$)';
+    const regexString = '(?<=\\d|\\s|^)' + measurementUnit + '(?=\\s|$)';
     const regex = new RegExp(regexString, 'gi');
     if (regex.test(ingredientString)) {
       ingredient = ingredient.replace(regex, '');
