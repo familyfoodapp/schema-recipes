@@ -10,6 +10,7 @@ export interface Recipe {
   nutrition: RecipeNutrition,
   keywords: string[],
   images: RecipeImage[],
+  source: RecipeSource,
 }
 
 export interface RecipeDuration {
@@ -21,7 +22,8 @@ export interface RecipeDuration {
 
 export interface RecipeIngredient {
   ingredient: string;
-  measure: string;
+  measure: number | null;
+  unit: string,
 }
 
 export interface RecipeImage {
@@ -50,6 +52,10 @@ export interface RecipeNutrition {
   unsaturatedFatContent: number,
 }
 
-export interface RecipePublisher {
+export interface RecipeSource {
   author: string,
+  publisher: string,
+  publisherUrl: string,
+  url: string,
+  language: string,
 }
