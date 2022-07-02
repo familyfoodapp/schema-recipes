@@ -1,1 +1,1 @@
-export {getRecipe, getSchemaRecipe} from './extract';
+export {getRecipe, getSchemaRecipe, getSchemaWebSite} from './extract';

@@ -18,6 +18,12 @@ export async function getRecipe(url: string, base64ImageDownload: boolean = fals
   return schemaRecipe ? await extractRecipe(schemaRecipe, schemaWebSite, url, language, base64ImageDownload) : null;
 }
 
+export async function getSchemaWebSite(url: string): Promise<SchemaWebSite | null> {
+  const html = await fetchHTML(url);
+  const definitions = extractDefinitions(html);
+  return extractSchemaWebSite(definitions);
+}
+
 function extractDefinitions(html: string): any[] {
 
   let definitions: any[] = [];
