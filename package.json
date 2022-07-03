@@ -1,6 +1,6 @@
 {
   "name": "schema-recipes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This library provides functions to retrieve recipe data from any website URL. The website data must be in schema.org format https://schema.org/.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
