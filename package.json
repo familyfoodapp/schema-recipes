@@ -20,7 +20,7 @@
     "url": "git+https://github.com/Creet-Studios/schema-recipes.git"
   },
   "author": "j0bIT",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Creet-Studios/schema-recipes/issues"
   },
