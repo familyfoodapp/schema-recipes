@@ -12,7 +12,13 @@ import * as td from 'tinyduration';
 import { fetchImageBase64 } from './requests/fetch';
 import { extractNumber, extractString, extractStringArray } from './extractTools';
 
-export async function extractRecipe(schemaRecipe: SchemaRecipe, schemaWebSite: SchemaWebSite | null, url: string, language : string | null, base64ImageDownload: boolean): Promise<Recipe> {
+export async function extractRecipe(
+  schemaRecipe: SchemaRecipe,
+  schemaWebSite: SchemaWebSite | null,
+  url: string,
+  language: string | null,
+  base64ImageDownload: boolean,
+): Promise<Recipe> {
   return <Recipe>{
     title: extractString(schemaRecipe.name),
     description: extractString(schemaRecipe.description),
@@ -34,7 +40,6 @@ export async function extractRecipe(schemaRecipe: SchemaRecipe, schemaWebSite: S
     language,
   };
 }
-
 
 function extractSource(schemaWebSite: SchemaWebSite | null, url: string, author: any, publisher: any): RecipeSource {
   const authorName = typeof author?.name === 'string' ? author?.name : null;
@@ -82,7 +87,6 @@ function extractMinutes(duration: any): number | null {
 }
 
 function extractInstruction(value: any): RecipeInstructionStep[] {
-
   const instructionSteps: RecipeInstructionStep[] = [];
 
   if (Array.isArray(value)) {
@@ -167,5 +171,3 @@ async function extractImages(value: any, base64ImageDownload: boolean): Promise<
 
   return images;
 }
-
-

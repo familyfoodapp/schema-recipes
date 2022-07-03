@@ -11,7 +11,7 @@ export function extractStringArray(value: any): string[] {
     });
   }
   if (typeof value === 'string') {
-    stringArray = value.split(',').map(string => string.trim());
+    stringArray = value.split(',').map((string) => string.trim());
   }
   return stringArray;
 }

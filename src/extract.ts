@@ -25,7 +25,6 @@ export async function getSchemaWebSite(url: string): Promise<SchemaWebSite | nul
 }
 
 function extractDefinitions(html: string): any[] {
-
   let definitions: any[] = [];
   const regex = /(?<=(<script[^>]*?type( *?)=( *?)["']application\/ld\+json["'][^>]*?>))([\s\S]*?)(?=(<\/script>))/gi;
   const regExpMatchArray = html.match(regex);
@@ -57,7 +56,7 @@ function extractLanguage(html: string): string | null {
   const regex = /(?<=(<html[^>]*?lang( *?)=( *?)["']))([A-z|-]*)(?=(["'][^>]*?>))/gi;
   const regExpMatchArray = html.match(regex);
   if (regExpMatchArray) {
-    if(regExpMatchArray.length > 0) return regExpMatchArray[0];
+    if (regExpMatchArray.length > 0) return regExpMatchArray[0];
   }
   return languageCode;
 }
