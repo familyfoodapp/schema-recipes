@@ -46,3 +46,10 @@ test('Get Recipe | juliasalbum', async () => {
   expect(recipe?.title).toBe('Spinach Ravioli with Ricotta Cheese Filling, in Tomato Cream Sauce');
   expect(recipe?.language).toBe('en-US');
 });
+
+test('Get Recipe | asiastreetfood', async () => {
+  const recipe = await getRecipe('https://asiastreetfood.com/rezept/biryani-huhn-rezept-kerala/');
+  console.info(recipe);
+  expect(recipe?.title).toBe('Biryani mit Huhn aus Kerala');
+  expect(recipe?.language).toBe('de-DE');
+});

@@ -20,23 +20,23 @@ export async function extractRecipe(
   base64ImageDownload: boolean,
 ): Promise<Recipe> {
   return {
-    title: extractString(schemaRecipe.name),
-    description: extractString(schemaRecipe.description),
-    category: extractStringArray(schemaRecipe.recipeCategory),
-    cuisine: extractStringArray(schemaRecipe.recipeCuisine),
-    yield: extractNumber(schemaRecipe.recipeYield),
+    title: extractString(schemaRecipe?.name),
+    description: extractString(schemaRecipe?.description),
+    category: extractStringArray(schemaRecipe?.recipeCategory),
+    cuisine: extractStringArray(schemaRecipe?.recipeCuisine),
+    yield: extractNumber(schemaRecipe?.recipeYield),
     duration: {
-      preparationTime: extractMinutes(schemaRecipe.prepTime),
-      cookingTime: extractMinutes(schemaRecipe.cookTime),
-      performTime: extractMinutes(schemaRecipe.performTime),
-      totalTime: extractMinutes(schemaRecipe.totalTime),
+      preparationTime: extractMinutes(schemaRecipe?.prepTime),
+      cookingTime: extractMinutes(schemaRecipe?.cookTime),
+      performTime: extractMinutes(schemaRecipe?.performTime),
+      totalTime: extractMinutes(schemaRecipe?.totalTime),
     },
-    instruction: extractInstruction(schemaRecipe.recipeInstructions),
-    ingredients: extractIngredients(schemaRecipe.recipeIngredient),
-    nutrition: extractNutrition(schemaRecipe.nutrition),
-    keywords: extractStringArray(schemaRecipe.keywords),
-    images: await extractImages(schemaRecipe.image, base64ImageDownload),
-    source: extractSource(schemaWebSite, url, schemaRecipe.author, schemaRecipe.publisher),
+    instruction: extractInstruction(schemaRecipe?.recipeInstructions),
+    ingredients: extractIngredients(schemaRecipe?.recipeIngredient),
+    nutrition: extractNutrition(schemaRecipe?.nutrition),
+    keywords: extractStringArray(schemaRecipe?.keywords),
+    images: await extractImages(schemaRecipe?.image, base64ImageDownload),
+    source: extractSource(schemaWebSite, url, schemaRecipe?.author, schemaRecipe?.publisher),
     language,
   };
 }
@@ -56,32 +56,36 @@ function extractSource(schemaWebSite: SchemaWebSite | null, url: string, author:
 
 function extractNutrition(value: any): RecipeNutrition {
   return {
-    calories: extractNumber(value.calories),
-    carbohydrateContent: extractNumber(value.carbohydrateContent),
-    cholesterolContent: extractNumber(value.cholesterolContent),
-    fatContent: extractNumber(value.fatContent),
-    fiberContent: extractNumber(value.fiberContent),
-    proteinContent: extractNumber(value.proteinContent),
-    saturatedFatContent: extractNumber(value.saturatedFatContent),
-    servingSize: extractNumber(value.servingSize),
-    sodiumContent: extractNumber(value.sodiumContent),
-    sugarContent: extractNumber(value.sugarContent),
-    transFatContent: extractNumber(value.transFatContent),
-    unsaturatedFatContent: extractNumber(value.unsaturatedFatContent),
+    calories: extractNumber(value?.calories),
+    carbohydrateContent: extractNumber(value?.carbohydrateContent),
+    cholesterolContent: extractNumber(value?.cholesterolContent),
+    fatContent: extractNumber(value?.fatContent),
+    fiberContent: extractNumber(value?.fiberContent),
+    proteinContent: extractNumber(value?.proteinContent),
+    saturatedFatContent: extractNumber(value?.saturatedFatContent),
+    servingSize: extractNumber(value?.servingSize),
+    sodiumContent: extractNumber(value?.sodiumContent),
+    sugarContent: extractNumber(value?.sugarContent),
+    transFatContent: extractNumber(value?.transFatContent),
+    unsaturatedFatContent: extractNumber(value?.unsaturatedFatContent),
   };
 }
 
 function extractMinutes(duration: any): number | null {
   if (typeof duration === 'string') {
-    let minutes = 0;
-    const cookTimeObject = td.parse(duration);
-    if (cookTimeObject.minutes) {
-      minutes += cookTimeObject.minutes;
+    try {
+      let minutes = 0;
+      const cookTimeObject = td.parse(duration);
+      if (cookTimeObject.minutes) {
+        minutes += cookTimeObject.minutes;
+      }
+      if (cookTimeObject.hours) {
+        minutes += cookTimeObject.hours * 60;
+      }
+      return minutes;
+    } catch (e) {
+      return extractNumber(duration);
     }
-    if (cookTimeObject.hours) {
-      minutes += cookTimeObject.hours * 60;
-    }
-    return minutes;
   }
   return null;
 }

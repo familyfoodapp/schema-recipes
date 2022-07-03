@@ -20,7 +20,7 @@ export function extractNumber(value: any): number | null {
   if (typeof value === 'string') {
     const regExpMatchArray = value.match(/\d+/);
     if (regExpMatchArray) {
-      return parseInt(regExpMatchArray[0], 2) ?? null;
+      return parseInt(regExpMatchArray[0], 10) ?? null;
     }
   }
   return null;

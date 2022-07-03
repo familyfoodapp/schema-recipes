@@ -12,6 +12,7 @@ export async function getSchemaRecipe(url: string): Promise<SchemaRecipe | null>
 export async function getRecipe(url: string, base64ImageDownload: boolean = false): Promise<Recipe | null> {
   const html = await fetchHTML(url);
   const definitions = extractDefinitions(html);
+  console.log(definitions);
   const schemaWebSite = extractSchemaWebSite(definitions);
   const schemaRecipe = extractSchemaRecipe(definitions);
   const language = extractLanguage(html);
@@ -31,7 +32,8 @@ function extractDefinitions(html: string): any[] {
   if (regExpMatchArray) {
     regExpMatchArray.forEach((content) => {
       try {
-        const definition = JSON.parse(content);
+        const clearedContent = content.replace(/[\r\n]/gm, '');
+        const definition = JSON.parse(clearedContent);
         definitions.push(definition);
       } catch (e) {
         return;
