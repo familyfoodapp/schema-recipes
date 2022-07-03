@@ -11,16 +11,16 @@ export function extractStringArray(value: any): string[] {
     });
   }
   if (typeof value === 'string') {
-    stringArray = value.split(',').map((string) => string.trim());
+    stringArray = value.split(',').map((element) => element.trim());
   }
   return stringArray;
 }
 
-export function extractNumber(string: any): number | null {
-  if (typeof string === 'string') {
-    const regExpMatchArray = string.match(/\d+/);
+export function extractNumber(value: any): number | null {
+  if (typeof value === 'string') {
+    const regExpMatchArray = value.match(/\d+/);
     if (regExpMatchArray) {
-      return parseInt(regExpMatchArray[0]) ?? null;
+      return parseInt(regExpMatchArray[0], 2) ?? null;
     }
   }
   return null;

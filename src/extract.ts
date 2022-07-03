@@ -25,29 +25,29 @@ export async function getSchemaWebSite(url: string): Promise<SchemaWebSite | nul
 }
 
 function extractDefinitions(html: string): any[] {
-  let definitions: any[] = [];
+  const definitions: any[] = [];
   const regex = /(?<=(<script[^>]*?type( *?)=( *?)["']application\/ld\+json["'][^>]*?>))([\s\S]*?)(?=(<\/script>))/gi;
   const regExpMatchArray = html.match(regex);
-  try {
-    if (regExpMatchArray) {
-      regExpMatchArray.forEach((content) => {
+  if (regExpMatchArray) {
+    regExpMatchArray.forEach((content) => {
+      try {
         const definition = JSON.parse(content);
         definitions.push(definition);
-      });
-    }
-  } catch (e) {
-    console.log('Failed to parse!');
+      } catch (e) {
+        return;
+      }
+    });
   }
   return definitions;
 }
 
 function extractSchemaRecipe(definitions: any[]): SchemaRecipe | null {
-  let schemaRecipe: SchemaRecipe = recursiveTypeSearch(definitions, 'recipe') as unknown as SchemaRecipe;
+  const schemaRecipe: SchemaRecipe = recursiveTypeSearch(definitions, 'recipe') as unknown as SchemaRecipe;
   return schemaRecipe ?? null;
 }
 
 function extractSchemaWebSite(definitions: any[]): SchemaWebSite | null {
-  let schemaWebSite: SchemaWebSite = recursiveTypeSearch(definitions, 'website') as unknown as SchemaWebSite;
+  const schemaWebSite: SchemaWebSite = recursiveTypeSearch(definitions, 'website') as unknown as SchemaWebSite;
   return schemaWebSite ?? null;
 }
 
@@ -62,6 +62,7 @@ function extractLanguage(html: string): string | null {
 }
 
 function recursiveTypeSearch(definitions: any[], type: string): any[] | null {
+  // tslint:disable-next-line:forin
   for (const k in definitions) {
     if (k === '@type') {
       if (definitions[k].toLowerCase() === type) {
@@ -69,8 +70,8 @@ function recursiveTypeSearch(definitions: any[], type: string): any[] | null {
       }
     }
 
-    if (typeof definitions[k] == 'object' && definitions[k] !== null) {
-      let definition = recursiveTypeSearch(definitions[k], type);
+    if (typeof definitions[k] === 'object' && definitions[k] !== null) {
+      const definition = recursiveTypeSearch(definitions[k], type);
       if (definition) return definition;
     }
   }

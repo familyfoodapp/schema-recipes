@@ -58,5 +58,4 @@ export interface RecipeSource {
   publisher: string | null;
   publisherUrl: string | null;
   url: string | null;
-  language: string | null;
 }

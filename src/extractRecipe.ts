@@ -19,7 +19,7 @@ export async function extractRecipe(
   language: string | null,
   base64ImageDownload: boolean,
 ): Promise<Recipe> {
-  return <Recipe>{
+  return {
     title: extractString(schemaRecipe.name),
     description: extractString(schemaRecipe.description),
     category: extractStringArray(schemaRecipe.recipeCategory),
@@ -44,9 +44,9 @@ export async function extractRecipe(
 function extractSource(schemaWebSite: SchemaWebSite | null, url: string, author: any, publisher: any): RecipeSource {
   const authorName = typeof author?.name === 'string' ? author?.name : null;
   const publisherName = typeof publisher?.name === 'string' ? publisher?.name : null;
-  let publisherUrl = typeof schemaWebSite?.url === 'string' ? schemaWebSite?.url : null;
+  const publisherUrl = typeof schemaWebSite?.url === 'string' ? schemaWebSite?.url : null;
 
-  return <RecipeSource>{
+  return {
     author: authorName,
     publisher: publisherName,
     publisherUrl,
