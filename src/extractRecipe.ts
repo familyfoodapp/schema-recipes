@@ -139,7 +139,7 @@ export function extractIngredient(ingredientString: string): RecipeIngredient {
   let ingredient = ingredientString;
   let unit = null;
   for (const measurementUnit of measurementUnits) {
-    const regexString = '(?<=\\d|\\s|^)' + measurementUnit + '(?=\\s|$)';
+    const regexString = '(\\d|\\s|^)' + measurementUnit + '(\\s|$)';
     const regex = new RegExp(regexString, 'gi');
     if (regex.test(ingredientString)) {
       ingredient = ingredient.replace(regex, '');
