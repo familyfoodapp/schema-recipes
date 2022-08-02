@@ -28,7 +28,7 @@ function extractDefinitions(html: string): any[] {
   const definitions: any[] = [];
   const regex = /(?:<script[^>]*?type(?:\s*?)=(?:\s*?)["']application\/ld\+json["'][^>]*?>)([\s\S]*?)(?=<\/script>)/gi;
 
-  const matches = Array.from(html.matchAll(regex), m => m[1]);
+  const matches = Array.from(html.matchAll(regex), (m) => m[1]);
 
   matches.forEach((content) => {
     try {
@@ -56,7 +56,7 @@ function extractSchemaWebSite(definitions: any[]): SchemaWebSite | null {
 function extractLanguage(html: string): string | null {
   const languageCode = null;
   const regex = /(?:<html[^>]*?lang(?:\s*?)=(?:\s*?)["'])([A-z|-]*)(?:["'][^>]*?>)/gi;
-  const matches = Array.from(html.matchAll(regex), m => m[1]);
+  const matches = Array.from(html.matchAll(regex), (m) => m[1]);
   if (matches) {
     if (matches.length > 0) return matches[0];
   }
