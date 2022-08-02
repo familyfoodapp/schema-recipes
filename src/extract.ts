@@ -26,19 +26,20 @@ export async function getSchemaWebSite(url: string): Promise<SchemaWebSite | nul
 
 function extractDefinitions(html: string): any[] {
   const definitions: any[] = [];
-  const regex = /(?<=(<script[^>]*?type( *?)=( *?)["']application\/ld\+json["'][^>]*?>))([\s\S]*?)(?=(<\/script>))/gi;
-  const regExpMatchArray = html.match(regex);
-  if (regExpMatchArray) {
-    regExpMatchArray.forEach((content) => {
-      try {
-        const clearedContent = content.replace(/[\r\n]/gm, '');
-        const definition = JSON.parse(clearedContent);
-        definitions.push(definition);
-      } catch (e) {
-        return;
-      }
-    });
-  }
+  const regex = /(?:<script[^>]*?type(?:\s*?)=(?:\s*?)["']application\/ld\+json["'][^>]*?>)([\s\S]*?)(?=<\/script>)/gi;
+
+  const matches = Array.from(html.matchAll(regex), m => m[1]);
+
+  matches.forEach((content) => {
+    try {
+      const clearedContent = content.replace(/[\r\n]/gm, '');
+      const definition = JSON.parse(clearedContent);
+      definitions.push(definition);
+    } catch (e) {
+      return;
+    }
+  });
+
   return definitions;
 }
 
@@ -54,10 +55,10 @@ function extractSchemaWebSite(definitions: any[]): SchemaWebSite | null {
 
 function extractLanguage(html: string): string | null {
   const languageCode = null;
-  const regex = /(?<=(<html[^>]*?lang( *?)=( *?)["']))([A-z|-]*)(?=(["'][^>]*?>))/gi;
-  const regExpMatchArray = html.match(regex);
-  if (regExpMatchArray) {
-    if (regExpMatchArray.length > 0) return regExpMatchArray[0];
+  const regex = /(?:<html[^>]*?lang(?:\s*?)=(?:\s*?)["'])([A-z|-]*)(?:["'][^>]*?>)/gi;
+  const matches = Array.from(html.matchAll(regex), m => m[1]);
+  if (matches) {
+    if (matches.length > 0) return matches[0];
   }
   return languageCode;
 }
