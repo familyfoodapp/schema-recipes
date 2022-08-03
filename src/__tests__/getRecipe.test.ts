@@ -53,3 +53,9 @@ test('Get Recipe | asiastreetfood', async () => {
   expect(recipe?.title).toBe('Biryani mit Huhn aus Kerala');
   expect(recipe?.language).toBe('de-DE');
 });
+
+test('Get Recipe | ydiasfoodblog', async () => {
+  const recipe = await getRecipe('https://lydiasfoodblog.de/asia-nudelpfanne-mit-gemuese-und-haehnchen/');
+  console.log(JSON.stringify(recipe?.instruction))
+  expect(recipe?.title).toBe('Asia Nudelpfanne mit Gemüse und Hähnchen');
+});

@@ -97,8 +97,9 @@ function extractInstruction(value: any): RecipeInstructionStep[] {
     value.forEach((step) => {
       switch (step['@type']) {
         case 'HowToStep':
+          const equal = step.name === step.text;
           instructionSteps.push({
-            name: step.name || null,
+            name: equal ? null : step.name || null,
             text: step.text || null,
             steps: null,
           });
