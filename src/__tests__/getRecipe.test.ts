@@ -56,6 +56,6 @@ test('Get Recipe | asiastreetfood', async () => {
 
 test('Get Recipe | ydiasfoodblog', async () => {
   const recipe = await getRecipe('https://lydiasfoodblog.de/asia-nudelpfanne-mit-gemuese-und-haehnchen/');
-  console.log(JSON.stringify(recipe?.instruction))
+  console.log(JSON.stringify(recipe?.instruction));
   expect(recipe?.title).toBe('Asia Nudelpfanne mit Gemüse und Hähnchen');
 });
